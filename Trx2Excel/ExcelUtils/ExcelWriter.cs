@@ -40,6 +40,8 @@ namespace Trx2Excel.ExcelUtils
                         Color.ForestGreen);
                     sheet.Cells[i, 4].Value = result.Message;
                     sheet.Cells[i, 5].Value = result.StrackTrace;
+                    sheet.Cells[i, 6].Value = result.Owner;
+                    sheet.Cells[i, 6].AutoFitColumns();
                     i++;
                 }
                 package.Save();
@@ -84,7 +86,7 @@ namespace Trx2Excel.ExcelUtils
 
         public ExcelWorksheet CreateHeader(ExcelWorksheet sheet)
         {
-            string[] header = {"Test Name", "Status", "Name Space","Exception Message", "Stack Trace"};
+            string[] header = {"Test Name", "Status", "Name Space","Exception Message", "Stack Trace", "Owner" };
             for (var i = 0; i < header.Length; i++)
             {
                 sheet.Cells[1, i + 1].Value = header[i];

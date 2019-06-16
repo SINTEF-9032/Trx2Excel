@@ -44,6 +44,7 @@ namespace Trx2Excel.TrxReaderUtil
             result.Outcome = node.Attributes?[NodeName.Outcome]?.InnerText;
             var outcome = (TestOutcome)Enum.Parse(typeof(TestOutcome), result.Outcome, true);
             result.NameSpace = GetNameSpace(doc.GetElementsByTagName(NodeName.UnitTest), node.Attributes?[NodeName.TestId]?.InnerText);
+            result.Owner = GetOwner(doc.GetElementsByTagName(NodeName.UnitTest), node.Attributes?[NodeName.TestId]?.InnerText);
             switch (outcome)
             {
                 case TestOutcome.Failed:
@@ -85,6 +86,35 @@ namespace Trx2Excel.TrxReaderUtil
                 var xmlAttributeCollection = node.ChildNodes[testMethod].Attributes;
                 if (xmlAttributeCollection != null)
                     return xmlAttributeCollection[NodeName.ClassName].Value.Split(',')[0];
+            }
+            return string.Empty;
+        }
+
+        public string GetOwner(XmlNodeList list, string id)
+        {
+            foreach (XmlNode node in list)
+            {
+                if (node.Attributes != null && node.Attributes["id"] == null)
+                    return "";
+                if (node.Attributes == null ||
+                    !node.Attributes["id"].Value.Equals(id, StringComparison.OrdinalIgnoreCase)) continue;
+
+                foreach (XmlNode child1 in node.ChildNodes)
+                {
+                    if(child1.Name == "Owners")
+                    {
+                        foreach (XmlNode child2 in child1.ChildNodes)
+                        {
+                            if (child2.Name == "Owner")
+                            {
+                                var xmlAttributeCollection = child2.Attributes;
+                                if ((xmlAttributeCollection != null) && (xmlAttributeCollection["name"] != null))
+                                    return xmlAttributeCollection["name"].Value;
+                            }
+                        }
+                    }
+                }
+
             }
             return string.Empty;
         }
