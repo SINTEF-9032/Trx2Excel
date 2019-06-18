@@ -18,30 +18,38 @@ namespace Trx2Excel.ExcelUtils
             FileName = fileName;
         }
 
-        public void WriteToExcel(List<UnitTestResult> resultList)
+        public void WriteToExcel(SortedDictionary<string, SortedDictionary<string, UnitTestResult>> total_results)
         {
             using (var package = new ExcelPackage(new System.IO.FileInfo(FileName)))
             {
-                var sheet = package.Workbook.Worksheets.Add("TestResult");
+                var sheet = package.Workbook.Worksheets.Add("TotalResults");
                 sheet = CreateHeader(sheet);
                 var i = 2;
-                foreach (var result in resultList)
+                var total_keys = total_results.Keys;
+                foreach (var total_key in total_keys)
                 {
-                    sheet.Cells[i, 1].Value = result.TestName;
-                    sheet.Cells[i, 1].AutoFitColumns();
-                    sheet.Cells[i, 2].Value = result.Outcome;
-                    sheet.Cells[i, 2].AutoFitColumns();
-                    sheet.Cells[i, 3].Value = result.NameSpace;
-                    sheet.Cells[i, 3].AutoFitColumns();
-                    sheet.Cells[i, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    sheet.Cells[i, 2].Style.Fill.BackgroundColor.SetColor(
-                        result.Outcome.Equals(TestOutcome.Failed.ToString(), StringComparison.OrdinalIgnoreCase)?
-                        Color.Red :
-                        Color.ForestGreen);
-                    sheet.Cells[i, 4].Value = result.Message;
-                    sheet.Cells[i, 5].Value = result.StrackTrace;
-                    sheet.Cells[i, 6].Value = result.Owner;
-                    sheet.Cells[i, 6].AutoFitColumns();
+                    var result_list = total_results[total_key];
+                    var result_keys = result_list.Keys;
+                    foreach (var result_key in result_keys)
+                    {
+                        var result = result_list[result_key];
+                        sheet.Cells[i, 1].Value = result.Owner;
+                        sheet.Cells[i, 1].AutoFitColumns();
+                        sheet.Cells[i, 2].Value = result.NameSpace;
+                        sheet.Cells[i, 2].AutoFitColumns();
+                        sheet.Cells[i, 3].Value = result.TestName;
+                        sheet.Cells[i, 3].AutoFitColumns();
+                        sheet.Cells[i, 4].Value = result.Outcome;
+                        sheet.Cells[i, 4].AutoFitColumns();
+                        sheet.Cells[i, 4].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        sheet.Cells[i, 4].Style.Fill.BackgroundColor.SetColor(
+                            result.Outcome.Equals(TestOutcome.Failed.ToString(), StringComparison.OrdinalIgnoreCase) ?
+                            Color.Red :
+                            Color.ForestGreen);
+                        sheet.Cells[i, 5].Value = result.Message;
+                        sheet.Cells[i, 6].Value = result.StrackTrace;
+                        i++;
+                    }
                     i++;
                 }
                 package.Save();
@@ -86,7 +94,7 @@ namespace Trx2Excel.ExcelUtils
 
         public ExcelWorksheet CreateHeader(ExcelWorksheet sheet)
         {
-            string[] header = {"Test Name", "Status", "Name Space","Exception Message", "Stack Trace", "Owner" };
+            string[] header = {"Owner", "Name Space", "Test Name", "Status", "Exception Message", "Stack Trace" };
             for (var i = 0; i < header.Length; i++)
             {
                 sheet.Cells[1, i + 1].Value = header[i];

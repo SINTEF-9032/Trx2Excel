@@ -20,31 +20,42 @@ namespace Trx2Excel.TrxReaderUtil
             FileName = fileName;
         }
 
-        public List<UnitTestResult> GetTestResults()
+        public SortedDictionary<string, SortedDictionary<string, UnitTestResult>> GetTestResults()
         {
-            var resultList = new List<UnitTestResult>();
+            var total_lists = new SortedDictionary<string, SortedDictionary<string, UnitTestResult>>();
+            //var resultList = new List<UnitTestResult>();
             var doc = new XmlDocument();
             doc.Load(FileName);
             var xmlNodeList = doc.GetElementsByTagName(NodeName.UnitTestResult);
 
             if (xmlNodeList.Count <= 0)
-                return resultList;
+                return total_lists;
 
             foreach (XmlNode node in xmlNodeList)
             {
-                resultList.Add(GetResult(doc,node));
+                var loc_results = GetResults(doc, node);
+                foreach (UnitTestResult result in loc_results)
+                {
+                    if (!total_lists.ContainsKey(result.Owner))
+                    {
+                        total_lists.Add(result.Owner, new SortedDictionary<string, UnitTestResult>());
+                    }
+                    string unique_test_name = result.NameSpace + "." + result.TestName;
+                    total_lists[result.Owner].Add(unique_test_name, result);
+                }
             }
-            return resultList;
+            return total_lists;
         }
 
-        public UnitTestResult GetResult(XmlDocument doc,XmlNode node)
+        public List<UnitTestResult> GetResults(XmlDocument doc,XmlNode node)
         {
+            var ret_list = new List<UnitTestResult>();
+
             var result = new UnitTestResult();
             result.TestName = node.Attributes?[NodeName.TestName]?.InnerText;
             result.Outcome = node.Attributes?[NodeName.Outcome]?.InnerText;
             var outcome = (TestOutcome)Enum.Parse(typeof(TestOutcome), result.Outcome, true);
             result.NameSpace = GetNameSpace(doc.GetElementsByTagName(NodeName.UnitTest), node.Attributes?[NodeName.TestId]?.InnerText);
-            result.Owner = GetOwner(doc.GetElementsByTagName(NodeName.UnitTest), node.Attributes?[NodeName.TestId]?.InnerText);
             switch (outcome)
             {
                 case TestOutcome.Failed:
@@ -61,7 +72,15 @@ namespace Trx2Excel.TrxReaderUtil
                     SkipCount++;
                     break;
             }
-            return result;
+
+            var owners = GetOwners(doc.GetElementsByTagName(NodeName.UnitTest), node.Attributes?[NodeName.TestId]?.InnerText);
+            foreach (string owner in owners)
+            {
+                var entry = new UnitTestResult(result);
+                entry.Owner = owner;
+                ret_list.Add(entry);
+            }
+            return ret_list;
         }
 
         public int GetNodeIndex(XmlNode node, string nodeName)
@@ -90,12 +109,16 @@ namespace Trx2Excel.TrxReaderUtil
             return string.Empty;
         }
 
-        public string GetOwner(XmlNodeList list, string id)
+        public List<string> GetOwners(XmlNodeList list, string id)
         {
+            var ret_list = new List<string>();
             foreach (XmlNode node in list)
             {
                 if (node.Attributes != null && node.Attributes["id"] == null)
-                    return "";
+                {
+                    ret_list.Add("");
+                    return ret_list;
+                }
                 if (node.Attributes == null ||
                     !node.Attributes["id"].Value.Equals(id, StringComparison.OrdinalIgnoreCase)) continue;
 
@@ -109,14 +132,23 @@ namespace Trx2Excel.TrxReaderUtil
                             {
                                 var xmlAttributeCollection = child2.Attributes;
                                 if ((xmlAttributeCollection != null) && (xmlAttributeCollection["name"] != null))
-                                    return xmlAttributeCollection["name"].Value;
+                                {
+                                    string loc_val = xmlAttributeCollection["name"].Value;
+                                    var loc_val_arr = loc_val.Split('|');
+                                    foreach(string val_entry in loc_val_arr)
+                                    {
+                                        ret_list.Add(val_entry.Trim());
+                                    }
+                                }
                             }
                         }
                     }
                 }
-
             }
-            return string.Empty;
+            if(ret_list.Count == 0)
+                ret_list.Add("");
+
+            return ret_list;
         }
     }
 }
