@@ -20,9 +20,8 @@ namespace Trx2Excel.TrxReaderUtil
             FileName = fileName;
         }
 
-        public SortedDictionary<string, SortedDictionary<string, UnitTestResult>> GetTestResults()
+        public SortedDictionary<string, SortedDictionary<string, UnitTestResult>> GetTestResults(ref SortedDictionary<string, SortedDictionary<string, UnitTestResult>> total_lists)
         {
-            var total_lists = new SortedDictionary<string, SortedDictionary<string, UnitTestResult>>();
             //var resultList = new List<UnitTestResult>();
             var doc = new XmlDocument();
             doc.Load(FileName);
@@ -36,6 +35,7 @@ namespace Trx2Excel.TrxReaderUtil
                 var loc_results = GetResults(doc, node);
                 foreach (UnitTestResult result in loc_results)
                 {
+                    result.FileName = FileName;
                     if (!total_lists.ContainsKey(result.Owner))
                     {
                         total_lists.Add(result.Owner, new SortedDictionary<string, UnitTestResult>());

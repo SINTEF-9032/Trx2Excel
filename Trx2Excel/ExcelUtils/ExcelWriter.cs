@@ -48,6 +48,7 @@ namespace Trx2Excel.ExcelUtils
                             Color.ForestGreen);
                         sheet.Cells[i, 5].Value = result.Message;
                         sheet.Cells[i, 6].Value = result.StrackTrace;
+                        sheet.Cells[i, 7].Value = result.FileName;
                         i++;
                     }
                     i++;
@@ -94,7 +95,7 @@ namespace Trx2Excel.ExcelUtils
 
         public ExcelWorksheet CreateHeader(ExcelWorksheet sheet)
         {
-            string[] header = {"Owner", "Name Space", "Test Name", "Status", "Exception Message", "Stack Trace" };
+            string[] header = {"Owner", "Name Space", "Test Name", "Status", "Exception Message", "Stack Trace", "File Name" };
             for (var i = 0; i < header.Length; i++)
             {
                 sheet.Cells[1, i + 1].Value = header[i];
