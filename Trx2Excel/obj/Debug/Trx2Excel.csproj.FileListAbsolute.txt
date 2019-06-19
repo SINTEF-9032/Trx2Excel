@@ -18,3 +18,13 @@ G:\AutomationWorkspace\Git-Hub\Trx2Excel\Trx2Excel\bin\Debug\log4net.dll
 G:\AutomationWorkspace\Git-Hub\Trx2Excel\Trx2Excel\bin\Debug\EPPlus.xml
 G:\AutomationWorkspace\Git-Hub\Trx2Excel\Trx2Excel\bin\Debug\log4net.xml
 G:\AutomationWorkspace\Git-Hub\Trx2Excel\Trx2Excel\obj\Debug\Trx2Excel.csprojResolveAssemblyReference.cache
+C:\Users\steffend\Documents\repos\Anita2B\trx2excel_github\Trx2Excel\bin\Debug\Trx2Excel.exe.config
+C:\Users\steffend\Documents\repos\Anita2B\trx2excel_github\Trx2Excel\obj\Debug\Trx2Excel.exe
+C:\Users\steffend\Documents\repos\Anita2B\trx2excel_github\Trx2Excel\obj\Debug\Trx2Excel.pdb
+C:\Users\steffend\Documents\repos\Anita2B\trx2excel_github\Trx2Excel\bin\Debug\Trx2Excel.exe
+C:\Users\steffend\Documents\repos\Anita2B\trx2excel_github\Trx2Excel\bin\Debug\Trx2Excel.pdb
+C:\Users\steffend\Documents\repos\Anita2B\trx2excel_github\Trx2Excel\bin\Debug\EPPlus.dll
+C:\Users\steffend\Documents\repos\Anita2B\trx2excel_github\Trx2Excel\bin\Debug\log4net.dll
+C:\Users\steffend\Documents\repos\Anita2B\trx2excel_github\Trx2Excel\bin\Debug\EPPlus.xml
+C:\Users\steffend\Documents\repos\Anita2B\trx2excel_github\Trx2Excel\bin\Debug\log4net.xml
+C:\Users\steffend\Documents\repos\Anita2B\trx2excel_github\Trx2Excel\obj\Debug\Trx2Excel.csprojResolveAssemblyReference.cache
