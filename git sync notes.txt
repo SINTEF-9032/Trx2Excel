@@ -7,3 +7,10 @@
   510  git branch --set-upstream-to github sync/master
   511  git push -u origin master
   512  git push
+  
+  
+  # Fetch updates from github
+  537  git pull synch master
+  540  git push -u origin master
+  
+  
