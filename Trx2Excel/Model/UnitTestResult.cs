@@ -20,6 +20,7 @@ namespace Trx2Excel.Model
             StrackTrace = copyFrom.StrackTrace;
             NameSpace = copyFrom.NameSpace;
             Owner = copyFrom.Owner;
+            AllOwnersString = copyFrom.AllOwnersString;
             FileName = copyFrom.FileName;
         }
 
@@ -29,6 +30,7 @@ namespace Trx2Excel.Model
         public string StrackTrace { get; set; }
         public string NameSpace { get; set; }
         public string Owner { get; set; }
+        public string AllOwnersString { get; set; }
         public string FileName { get; set; }
 
     }

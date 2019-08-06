@@ -76,6 +76,20 @@ namespace Trx2Excel.TrxReaderUtil
             var owners = GetOwners(doc.GetElementsByTagName(NodeName.UnitTest), node.Attributes?[NodeName.TestId]?.InnerText);
             foreach (string owner in owners)
             {
+                if (result.AllOwnersString == null)
+                {
+                    result.AllOwnersString = "";
+                }
+
+                if (result.AllOwnersString.Length != 0)
+                {
+                    result.AllOwnersString += " | ";
+                }
+                result.AllOwnersString += owner;
+            }
+
+            foreach (string owner in owners)
+            {
                 var entry = new UnitTestResult(result);
                 entry.Owner = owner;
                 ret_list.Add(entry);
