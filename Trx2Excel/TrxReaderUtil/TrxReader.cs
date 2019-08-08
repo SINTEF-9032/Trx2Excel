@@ -94,6 +94,12 @@ namespace Trx2Excel.TrxReaderUtil
                 entry.Owner = owner;
                 ret_list.Add(entry);
             }
+            {
+                var entry = new UnitTestResult(result);
+                entry.Owner = "$$$SINGLE$$$";
+                ret_list.Add(entry);
+            }
+            
             return ret_list;
         }
 

@@ -34,7 +34,8 @@ namespace Trx2Excel
                 skip_count += reader.SkipCount;
             }
             var excelWriter = new ExcelWriter(args[1]);
-            excelWriter.WriteToExcel(resultList);
+            excelWriter.WriteOwnerResultsToExcel(resultList);
+            excelWriter.WriteUniqueResultsToExcel(resultList);
             Console.WriteLine("[INFO] : Writing to Excel File : {0}", args[1]);
             excelWriter.AddChart(pass_count, fail_count, skip_count);
             Console.WriteLine("[INFO] : Generating charts : {0}", args[1]);

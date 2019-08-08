@@ -18,45 +18,92 @@ namespace Trx2Excel.ExcelUtils
             FileName = fileName;
         }
 
-        public void WriteToExcel(SortedDictionary<string, SortedDictionary<string, UnitTestResult>> total_results)
+        public void WriteOwnerResultsToExcel(SortedDictionary<string, SortedDictionary<string, UnitTestResult>> total_results)
         {
             using (var package = new ExcelPackage(new System.IO.FileInfo(FileName)))
             {
-                var sheet = package.Workbook.Worksheets.Add("TotalResults");
+                var sheet = package.Workbook.Worksheets.Add("OwnerResults");
                 sheet = CreateHeader(sheet);
                 var i = 2;
                 var total_keys = total_results.Keys;
                 foreach (var total_key in total_keys)
                 {
-                    var result_list = total_results[total_key];
-                    var result_keys = result_list.Keys;
-                    foreach (var result_key in result_keys)
+                    if (total_key != "$$$SINGLE$$$")
                     {
-                        var result = result_list[result_key];
-                        sheet.Cells[i, 1].Value = result.Owner;
-                        sheet.Cells[i, 1].AutoFitColumns();
-                        sheet.Cells[i, 2].Value = result.NameSpace;
-                        sheet.Cells[i, 2].AutoFitColumns();
-                        sheet.Cells[i, 3].Value = result.TestName;
-                        sheet.Cells[i, 3].AutoFitColumns();
-                        sheet.Cells[i, 4].Value = result.Outcome;
-                        sheet.Cells[i, 4].AutoFitColumns();
-                        sheet.Cells[i, 4].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        sheet.Cells[i, 4].Style.Fill.BackgroundColor.SetColor(
-                            result.Outcome.Equals(TestOutcome.Failed.ToString(), StringComparison.OrdinalIgnoreCase) ?
-                            Color.Red :
-                            Color.ForestGreen);
-                        sheet.Cells[i, 5].Value = result.Message;
-                        sheet.Cells[i, 6].Value = result.StrackTrace;
-                        sheet.Cells[i, 7].Value = result.AllOwnersString;
-                        sheet.Cells[i, 8].Value = result.FileName;
+                        var result_list = total_results[total_key];
+                        var result_keys = result_list.Keys;
+                        foreach (var result_key in result_keys)
+                        {
+                            var result = result_list[result_key];
+                            sheet.Cells[i, 1].Value = result.Owner;
+                            sheet.Cells[i, 1].AutoFitColumns();
+                            sheet.Cells[i, 2].Value = result.NameSpace;
+                            sheet.Cells[i, 2].AutoFitColumns();
+                            sheet.Cells[i, 3].Value = result.TestName;
+                            sheet.Cells[i, 3].AutoFitColumns();
+                            sheet.Cells[i, 4].Value = result.Outcome;
+                            sheet.Cells[i, 4].AutoFitColumns();
+                            sheet.Cells[i, 4].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            sheet.Cells[i, 4].Style.Fill.BackgroundColor.SetColor(
+                                result.Outcome.Equals(TestOutcome.Failed.ToString(), StringComparison.OrdinalIgnoreCase) ?
+                                Color.Red :
+                                Color.ForestGreen);
+                            sheet.Cells[i, 5].Value = result.Message;
+                            sheet.Cells[i, 6].Value = result.StrackTrace;
+                            sheet.Cells[i, 7].Value = result.AllOwnersString;
+                            sheet.Cells[i, 8].Value = result.FileName;
+                            i++;
+
+                        }
                         i++;
                     }
-                    i++;
                 }
                 package.Save();
             }
-            
+        }
+
+        public void WriteUniqueResultsToExcel(SortedDictionary<string, SortedDictionary<string, UnitTestResult>> total_results)
+        {
+            using (var package = new ExcelPackage(new System.IO.FileInfo(FileName)))
+            {
+                var sheet = package.Workbook.Worksheets.Add("UniqueResults");
+                sheet = CreateHeader(sheet);
+                var i = 2;
+                var total_keys = total_results.Keys;
+                foreach (var total_key in total_keys)
+                {
+                    if (total_key == "$$$SINGLE$$$")
+                    {
+                        var result_list = total_results[total_key];
+                        var result_keys = result_list.Keys;
+                        foreach (var result_key in result_keys)
+                        {
+                            var result = result_list[result_key];
+                            sheet.Cells[i, 1].Value = result.Owner;
+                            sheet.Cells[i, 1].AutoFitColumns();
+                            sheet.Cells[i, 2].Value = result.NameSpace;
+                            sheet.Cells[i, 2].AutoFitColumns();
+                            sheet.Cells[i, 3].Value = result.TestName;
+                            sheet.Cells[i, 3].AutoFitColumns();
+                            sheet.Cells[i, 4].Value = result.Outcome;
+                            sheet.Cells[i, 4].AutoFitColumns();
+                            sheet.Cells[i, 4].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            sheet.Cells[i, 4].Style.Fill.BackgroundColor.SetColor(
+                                result.Outcome.Equals(TestOutcome.Failed.ToString(), StringComparison.OrdinalIgnoreCase) ?
+                                Color.Red :
+                                Color.ForestGreen);
+                            sheet.Cells[i, 5].Value = result.Message;
+                            sheet.Cells[i, 6].Value = result.StrackTrace;
+                            sheet.Cells[i, 7].Value = result.AllOwnersString;
+                            sheet.Cells[i, 8].Value = result.FileName;
+                            i++;
+
+                        }
+                        i++;
+                    }
+                }
+                package.Save();
+            }
         }
 
         public void AddChart(int pass, int fail, int skip)
