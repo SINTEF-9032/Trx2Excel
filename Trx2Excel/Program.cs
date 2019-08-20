@@ -15,7 +15,7 @@ namespace Trx2Excel
     {
         static void Main(string[] args)
         {
-            if (args == null || args.Length != 2)
+            if (args == null || args.Length != 3)
                throw new Exception("Illegal Number of Argument");
 
             var resultList = new SortedDictionary<string, SortedDictionary<string, UnitTestResult>>();
@@ -33,7 +33,7 @@ namespace Trx2Excel
                 fail_count += reader.FailCount;
                 skip_count += reader.SkipCount;
             }
-            var excelWriter = new ExcelWriter(args[1]);
+            var excelWriter = new ExcelWriter(args[1], args[2]);
             excelWriter.WriteOwnerResultsToExcel(resultList);
             excelWriter.WriteUniqueResultsToExcel(resultList);
             Console.WriteLine("[INFO] : Writing to Excel File : {0}", args[1]);
