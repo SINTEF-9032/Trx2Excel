@@ -74,6 +74,7 @@ namespace Trx2Excel.TrxReaderUtil
             }
 
             var owners = GetOwners(doc.GetElementsByTagName(NodeName.UnitTest), node.Attributes?[NodeName.TestId]?.InnerText);
+
             foreach (string owner in owners)
             {
                 if (result.AllOwnersString == null)
@@ -85,15 +86,27 @@ namespace Trx2Excel.TrxReaderUtil
                 {
                     result.AllOwnersString += " | ";
                 }
-                result.AllOwnersString += owner;
+                if (owner.StartsWith("PURPOSE:"))
+                {
+                    result.Purpose = owner.Substring(9);
+                }
+                else
+                {
+                    result.AllOwnersString += owner;
+                }
+                
             }
 
             foreach (string owner in owners)
             {
-                var entry = new UnitTestResult(result);
-                entry.Owner = owner;
-                ret_list.Add(entry);
+                if (!owner.StartsWith("PURPOSE:"))
+                {
+                    var entry = new UnitTestResult(result);
+                    entry.Owner = owner;
+                    ret_list.Add(entry);
+                }
             }
+
             {
                 var entry = new UnitTestResult(result);
                 entry.Owner = "$$$SINGLE$$$";

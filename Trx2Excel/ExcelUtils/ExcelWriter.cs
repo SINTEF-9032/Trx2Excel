@@ -43,19 +43,21 @@ namespace Trx2Excel.ExcelUtils
                             sheet.Cells[i, 2].AutoFitColumns();
                             sheet.Cells[i, 3].Value = result.TestName;
                             sheet.Cells[i, 3].AutoFitColumns();
-                            sheet.Cells[i, 4].Value = CommitInfo;
+                            sheet.Cells[i, 4].Value = result.Purpose;
                             sheet.Cells[i, 4].AutoFitColumns();
-                            sheet.Cells[i, 5].Value = result.Outcome;
+                            sheet.Cells[i, 5].Value = CommitInfo;
                             sheet.Cells[i, 5].AutoFitColumns();
-                            sheet.Cells[i, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            sheet.Cells[i, 5].Style.Fill.BackgroundColor.SetColor(
+                            sheet.Cells[i, 6].Value = result.Outcome;
+                            sheet.Cells[i, 6].AutoFitColumns();
+                            sheet.Cells[i, 6].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            sheet.Cells[i, 6].Style.Fill.BackgroundColor.SetColor(
                                 result.Outcome.Equals(TestOutcome.Failed.ToString(), StringComparison.OrdinalIgnoreCase) ?
                                 Color.Red :
                                 Color.ForestGreen);
-                            sheet.Cells[i, 6].Value = result.Message;
-                            sheet.Cells[i, 7].Value = result.StrackTrace;
-                            sheet.Cells[i, 8].Value = result.AllOwnersString;
-                            sheet.Cells[i, 9].Value = result.FileName;
+                            sheet.Cells[i, 7].Value = result.Message;
+                            sheet.Cells[i, 8].Value = result.StrackTrace;
+                            sheet.Cells[i, 9].Value = result.AllOwnersString;
+                            sheet.Cells[i, 10].Value = result.FileName;
                             i++;
 
                         }
@@ -89,19 +91,21 @@ namespace Trx2Excel.ExcelUtils
                             sheet.Cells[i, 2].AutoFitColumns();
                             sheet.Cells[i, 3].Value = result.TestName;
                             sheet.Cells[i, 3].AutoFitColumns();
-                            sheet.Cells[i, 4].Value = CommitInfo;
+                            sheet.Cells[i, 4].Value = result.Purpose;
                             sheet.Cells[i, 4].AutoFitColumns();
-                            sheet.Cells[i, 5].Value = result.Outcome;
+                            sheet.Cells[i, 5].Value = CommitInfo;
                             sheet.Cells[i, 5].AutoFitColumns();
-                            sheet.Cells[i, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            sheet.Cells[i, 5].Style.Fill.BackgroundColor.SetColor(
+                            sheet.Cells[i, 6].Value = result.Outcome;
+                            sheet.Cells[i, 6].AutoFitColumns();
+                            sheet.Cells[i, 6].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            sheet.Cells[i, 6].Style.Fill.BackgroundColor.SetColor(
                                 result.Outcome.Equals(TestOutcome.Failed.ToString(), StringComparison.OrdinalIgnoreCase) ?
                                 Color.Red :
                                 Color.ForestGreen);
-                            sheet.Cells[i, 6].Value = result.Message;
-                            sheet.Cells[i, 7].Value = result.StrackTrace;
-                            sheet.Cells[i, 8].Value = result.AllOwnersString;
-                            sheet.Cells[i, 9].Value = result.FileName;
+                            sheet.Cells[i, 7].Value = result.Message;
+                            sheet.Cells[i, 8].Value = result.StrackTrace;
+                            sheet.Cells[i, 9].Value = result.AllOwnersString;
+                            sheet.Cells[i, 10].Value = result.FileName;
                             i++;
 
                         }
@@ -149,7 +153,7 @@ namespace Trx2Excel.ExcelUtils
 
         public ExcelWorksheet CreateHeader(ExcelWorksheet sheet)
         {
-            string[] header = {"Owner", "Name Space", "Test Name", "Commit info", "Status", "Exception Message", "Stack Trace", "All owners", "File Name" };
+            string[] header = {"Owner", "Name Space", "Test Name", "Purpose", "Commit info", "Status", "Exception Message", "Stack Trace", "All owners", "File Name" };
             for (var i = 0; i < header.Length; i++)
             {
                 sheet.Cells[1, i + 1].Value = header[i];

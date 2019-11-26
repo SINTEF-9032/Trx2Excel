@@ -10,11 +10,13 @@ namespace Trx2Excel.Model
     {
         public UnitTestResult()
         {
+            Purpose = "See Test Name";
         }
 
         public UnitTestResult(UnitTestResult copyFrom)
         {
             TestName = copyFrom.TestName;
+            Purpose = copyFrom.Purpose;
             Outcome = copyFrom.Outcome;
             Message = copyFrom.Message;
             StrackTrace = copyFrom.StrackTrace;
@@ -25,6 +27,7 @@ namespace Trx2Excel.Model
         }
 
         public string TestName { get; set; }
+        public string Purpose { get; set; }
         public string Outcome { get; set; }
         public string Message { get; set; }
         public string StrackTrace { get; set; }
